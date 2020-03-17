@@ -64,11 +64,20 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< HEAD
     width: 1920
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
   m_LastLoadedLayoutName: Pro Layout
+=======
+    width: 489
+    height: 741
+  m_MinSize: {x: 234, y: 494}
+  m_MaxSize: {x: 10004, y: 14044}
+  vertical: 1
+  controlID: 132
+>>>>>>> 087a1caefe48dbbf14fe407e850b43dc36c5039d
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -183,6 +192,7 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
+<<<<<<< HEAD
     y: 338
     width: 954
     height: 609
@@ -193,6 +203,15 @@ MonoBehaviour:
   - {fileID: 13}
   m_Selected: 0
   m_LastSelected: 0
+=======
+    y: 30
+    width: 1536
+    height: 741
+  m_MinSize: {x: 613, y: 494}
+  m_MaxSize: {x: 18008, y: 14044}
+  vertical: 0
+  controlID: 153
+>>>>>>> 087a1caefe48dbbf14fe407e850b43dc36c5039d
 --- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -217,7 +236,11 @@ MonoBehaviour:
   m_MinSize: {x: 234, y: 494}
   m_MaxSize: {x: 10004, y: 14044}
   vertical: 1
+<<<<<<< HEAD
   controlID: 6144
+=======
+  controlID: 69
+>>>>>>> 087a1caefe48dbbf14fe407e850b43dc36c5039d
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -570,20 +593,32 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
+<<<<<<< HEAD
     - Assets/Scenes
+=======
+    - Assets
+>>>>>>> 087a1caefe48dbbf14fe407e850b43dc36c5039d
   m_ViewMode: 0
   m_StartGridSize: 64
   m_LastFolders: []
   m_LastFoldersGridSize: -1
+<<<<<<< HEAD
   m_LastProjectPath: C:\Users\Robert Ward\Documents\Unity Projects\Space Shooter\UnitySpaceShooter\Space
     Shooter
+=======
+  m_LastProjectPath: C:\Users\enter\Documents\GitHub\UnitySpaceShooter\Space Shooter
+>>>>>>> 087a1caefe48dbbf14fe407e850b43dc36c5039d
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: ac300000
     m_LastClickedID: 12460
+<<<<<<< HEAD
     m_ExpandedIDs: ffffffff00000000cc2c0000a43000007e330000243600004a37000046500000
+=======
+    m_ExpandedIDs: 00000000b22c0000ec2e0000f4350000b2360000
+>>>>>>> 087a1caefe48dbbf14fe407e850b43dc36c5039d
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -611,7 +646,11 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
+<<<<<<< HEAD
     m_ExpandedIDs: ffffffff00000000cc2c00007e33000066340000243600004a37000046500000
+=======
+    m_ExpandedIDs: ffffffff00000000b22c0000ec2e0000f4350000b2360000
+>>>>>>> 087a1caefe48dbbf14fe407e850b43dc36c5039d
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
