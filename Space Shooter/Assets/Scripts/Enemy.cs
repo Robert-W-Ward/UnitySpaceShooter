@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Enemy : MonoBehaviour
 {
+    private Player p1;
+
     [SerializeField]
     private float _speed = 4f;
     private void Start()
     {
-        
+        p1 = GameObject.Find("Player").GetComponent<Player>();
     }
     // Update is called once per frame
     void Update()
@@ -40,18 +41,15 @@ public class Enemy : MonoBehaviour
         }
         //Destorys laser and enemy object//
         if (other.tag == "Laser")
-        {
+        {            
             Destroy(other.gameObject);
+            if (p1 != null)
+            {
+                p1.IncreaseScore();
+            }
+            
 
             Destroy(this.gameObject);
-        }
-
-
-
-
-
-
+       }
     }
-
-
 }   

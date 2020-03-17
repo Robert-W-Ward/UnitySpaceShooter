@@ -5,46 +5,58 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     // Start is called before the first frame update
+    
     [SerializeField]
     private float speed = 0f;
-    
+
     [SerializeField]
     private float RunSpeed = 0f;
-    
-    [SerializeField]
-    private GameObject LaserPrefab;
-    
-    [SerializeField]
-    private GameObject TripleShotPrefab;
-  
+
     [SerializeField]
     private float _firerate = .5f;
-  
-    [SerializeField]
-    
-    private int initLives = 3;
-    
+
     private float _canFire = -1f;
     
-    private SpawnManager _spawnManager;
+    [SerializeField]
+    private int initLives = 3;
+
+    [SerializeField]
+    public int score = 00;
+
+    [SerializeField]
+    private GameObject LaserPrefab;
+ 
+    [SerializeField]
+    private GameObject TripleShotPrefab;
+
+    [SerializeField]
+    private GameObject ShieldSprite;
 
    
 
-    [SerializeField]
-    private bool isTripShotactive = false;
+    private SpawnManager _spawnManager;
+
+    private UIManager _uIManager;
+   
+    private bool isTripShotactive = false; 
+
+    private bool isShieldActive = false;
 
     void Start()
     {
         //Set current position to new position
         transform.position = new Vector3(0 , -5, 0);
-        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
-        if(_spawnManager == null)
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        _uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        if (_spawnManager == null)
         {
             Debug.LogError("Spawn Manager is null");
         }
-
-
+        if(_uIManager == null)
+        {
+            Debug.LogError("UImanager is Null");
+        }
 
     }
 
@@ -53,17 +65,15 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
        
-        
-
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             FireLaser();
-
         }
     } 
 
     void CalculateMovement()
     {
+       
         float _HMoveInput = Input.GetAxis("Horizontal");
 
         float _VMoveInput = Input.GetAxis("Vertical");
@@ -72,25 +82,7 @@ public class Player : MonoBehaviour
 
         transform.Translate(_Direction * speed * Time.deltaTime);
 
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4.75f, 4.75f), 0);
-
-        if (transform.position.x > 11.4)
-        {
-            transform.position = new Vector3(-11.4f, transform.position.y);
-        }
-        else if (transform.position.x < -11.4)
-        {
-            transform.position = new Vector3(11.4f, transform.position.y);
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            speed = RunSpeed;
-
-        }
-        else
-        {
-            speed = 5;
-        }
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x,-9.4f,9.4f), Mathf.Clamp(transform.position.y, -4.75f, 4.75f), 0);
 
     }
 
@@ -101,7 +93,7 @@ public class Player : MonoBehaviour
         
         if (isTripShotactive == true)
         {
-            Instantiate(TripleShotPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            Instantiate(TripleShotPrefab, transform.position, Quaternion.identity);
         }
         else
         {
@@ -112,13 +104,21 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        initLives--;
+        if (isShieldActive == true)
+        {
+            isShieldActive = false;
+            
+            ShieldSprite.SetActive(false);
 
-        Debug.Log("Lives" + initLives);
+            return;
+        }
+        initLives--;
+        _uIManager.UpdateLives(initLives);
+       
 
         if (initLives <= 0)
         {
-
+            
             _spawnManager.OnPlayerDeath();
 
             Destroy(this.gameObject);
@@ -129,6 +129,7 @@ public class Player : MonoBehaviour
     public void ActivateTripleShot()
     {
         isTripShotactive = true;
+
         StartCoroutine(TripleShotCoolDown());
     }
 
@@ -136,7 +137,34 @@ public class Player : MonoBehaviour
     {
         
         yield return new WaitForSeconds(5.0f);
+
         isTripShotactive = false;
+    }
+
+    public void ActivateSpeedBoost()
+    {      
+        speed +=3;
+
+        StartCoroutine(SpeedBoostCooldown());
+
+    }
+     IEnumerator SpeedBoostCooldown()
+    {
+        yield return new WaitForSeconds(5f);
+
+        speed = 5f;     
+    }
+
+    public void ActivateShield()
+    {
+        isShieldActive = true;
+
+        ShieldSprite.SetActive(true);
+    }
+    public void IncreaseScore()
+    {
+        score += 1;
+        _uIManager.UpdateScore(score);
     }
 
 }
