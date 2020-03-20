@@ -32,7 +32,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject ShieldSprite;
 
-   
+    [SerializeField]
+    private GameObject _LeftEngine;
+    [SerializeField]
+    private GameObject _RightEngine;
 
     private SpawnManager _spawnManager;
 
@@ -57,7 +60,7 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("UImanager is Null");
         }
-
+        
     }
 
     // Update is called once per frame
@@ -114,7 +117,15 @@ public class Player : MonoBehaviour
         }
         initLives--;
         _uIManager.UpdateLives(initLives);
-       
+        if(initLives == 2)
+        {
+            _LeftEngine.SetActive(true);
+        }else if (initLives == 1)
+        {
+            _LeftEngine.SetActive(true);
+            _RightEngine.SetActive(true);
+        }
+
 
         if (initLives <= 0)
         {

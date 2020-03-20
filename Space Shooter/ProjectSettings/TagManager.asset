@@ -46,9 +46,6 @@ TagManager:
   - name: BackGround
     uniqueID: 2568945795
     locked: 0
-  - name: Shield
-    uniqueID: 2327654143
-    locked: 0
   - name: ForeGround
     uniqueID: 3379932155
     locked: 0

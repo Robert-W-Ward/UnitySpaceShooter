@@ -8,9 +8,21 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private float _speed = 4f;
+    private BoxCollider2D _2dCollider;
+    private Animator DeathAnimation;
+
     private void Start()
     {
         p1 = GameObject.Find("Player").GetComponent<Player>();
+        if(p1 == null)
+        {
+            Debug.LogError("Player is null");        
+        }
+        DeathAnimation = GetComponent<Animator>();
+        if (DeathAnimation == null)
+        {
+            Debug.LogError("Animator is null");
+        }
     }
     // Update is called once per frame
     void Update()
@@ -35,21 +47,27 @@ public class Enemy : MonoBehaviour
             {
                 p1.Damage();
             }
-
-            Destroy(this.gameObject);
+            DeathAnimation.SetTrigger("OnEnemyDeath");
+            _speed = 0f;
+            Destroy(this.gameObject,.2f);
 
         }
         //Destorys laser and enemy object//
         if (other.tag == "Laser")
-        {            
+        {
+            
             Destroy(other.gameObject);
             if (p1 != null)
             {
                 p1.IncreaseScore();
             }
-            
 
-            Destroy(this.gameObject);
+            DeathAnimation.SetTrigger("OnEnemyDeath");
+            GetComponent<BoxCollider2D>().enabled = false;
+            
+            _speed = 0f;
+            Destroy(this.gameObject,3f);
        }
+
     }
 }   
