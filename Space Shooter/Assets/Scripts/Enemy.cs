@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     private float _speed = 4f;
     private BoxCollider2D _2dCollider;
     private Animator DeathAnimation;
-
+    private AudioSource _LaserSound;
     private void Start()
     {
         p1 = GameObject.Find("Player").GetComponent<Player>();
@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Animator is null");
         }
+        _LaserSound = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
     }
     // Update is called once per frame
     void Update()
@@ -48,8 +49,10 @@ public class Enemy : MonoBehaviour
                 p1.Damage();
             }
             DeathAnimation.SetTrigger("OnEnemyDeath");
+            _LaserSound.Play();
+            GetComponent<BoxCollider2D>().enabled = false;
             _speed = 0f;
-            Destroy(this.gameObject,.2f);
+            Destroy(this.gameObject,3f);
 
         }
         //Destorys laser and enemy object//
@@ -63,6 +66,7 @@ public class Enemy : MonoBehaviour
             }
 
             DeathAnimation.SetTrigger("OnEnemyDeath");
+            _LaserSound.Play();
             GetComponent<BoxCollider2D>().enabled = false;
             
             _speed = 0f;

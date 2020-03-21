@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     public int score = 00;
 
+    
+
     [SerializeField]
     private GameObject LaserPrefab;
  
@@ -36,8 +39,13 @@ public class Player : MonoBehaviour
     private GameObject _LeftEngine;
     [SerializeField]
     private GameObject _RightEngine;
+    [SerializeField]
+    private GameObject Explosion;
 
     private SpawnManager _spawnManager;
+
+    private AudioSource _LaserSound;
+    private AudioSource _ExplosionSound;
 
     private UIManager _uIManager;
    
@@ -52,6 +60,8 @@ public class Player : MonoBehaviour
 
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _LaserSound = GameObject.Find("Laser_SoundEffect").GetComponent<AudioSource>();
+        _ExplosionSound = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
         if (_spawnManager == null)
         {
             Debug.LogError("Spawn Manager is null");
@@ -67,21 +77,33 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
-       
+
+#if UNITY_IOS
+        if (Input.GetKeyDown(KeyCode.Space) || CrossPlatformInputManager.GetButtonDown("Fire") && Time.time > _canFire)
+        {
+            FireLaser();
+        }
+#else 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
             FireLaser();
         }
+#endif
     } 
 
     void CalculateMovement()
     {
-       
-        float _HMoveInput = Input.GetAxis("Horizontal");
+        float _HMoveInputM = CrossPlatformInputManager.GetAxis("Horizontal");// Input.GetAxis("Horizontal");
+        float _VMoveInputM = CrossPlatformInputManager.GetAxis("Vertical");//Input.GetAxis("Vertical");
 
-        float _VMoveInput = Input.GetAxis("Vertical");
-
-        Vector3 _Direction = new Vector3(_HMoveInput, _VMoveInput, 0);
+        float _HMoveInputPC = Input.GetAxis("Horizontal");
+        float _VMoveInputPC = Input.GetAxis("Vertical");
+#if UNITY_IOS
+        Vector3 _DirectionM = new Vector3(_HMoveInputM, _VMoveInputM, 0);
+        transform.Translate(_DirectionM * speed * Time.deltaTime);
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -9.4f, 9.4f), Mathf.Clamp(transform.position.y, -4.75f, 4.75f), 0);
+#endif
+        Vector3 _Direction = new Vector3(_HMoveInputPC, _VMoveInputPC, 0);
 
         transform.Translate(_Direction * speed * Time.deltaTime);
 
@@ -97,11 +119,15 @@ public class Player : MonoBehaviour
         if (isTripShotactive == true)
         {
             Instantiate(TripleShotPrefab, transform.position, Quaternion.identity);
+            
+
         }
         else
         {
             Instantiate(LaserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
         }
+        _LaserSound.Play();
+
     }
    
 
@@ -129,10 +155,11 @@ public class Player : MonoBehaviour
 
         if (initLives <= 0)
         {
-            
+            _ExplosionSound.Play();
+            Instantiate(Explosion, transform.position, Quaternion.identity);
             _spawnManager.OnPlayerDeath();
 
-            Destroy(this.gameObject);
+            Destroy(gameObject);
            
         }
     }

@@ -10,9 +10,14 @@ public class PowerUps : MonoBehaviour
     [SerializeField]
     private float _speed = 3f;
 
+    private AudioSource _PowerUpSound;
+
     [SerializeField]
     private int powerupID;
-
+    private void Start()
+    {
+        _PowerUpSound = GameObject.Find("PowerUpSound").GetComponent<AudioSource>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -31,6 +36,7 @@ public class PowerUps : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            _PowerUpSound.Play();
             Player _player = other.transform.GetComponent<Player>();
             if(_player!= null)
             {

@@ -10,12 +10,13 @@ public class Asteroid : MonoBehaviour
     [SerializeField]
     private GameObject Explosion;
 
-
+    private AudioSource _LaserSound;
     private SpawnManager _spawnManager;
     // Start is called before the first frame update
     void Start()
     {
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        _LaserSound = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,7 +33,7 @@ public class Asteroid : MonoBehaviour
             Destroy(other.gameObject);
 
             Instantiate(Explosion,transform.position,Quaternion.identity);
-
+            _LaserSound.Play();
             _spawnManager.StartSpawning();
 
             Destroy(this.gameObject,.25f);
