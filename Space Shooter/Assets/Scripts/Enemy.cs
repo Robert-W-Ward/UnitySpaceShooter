@@ -11,6 +11,11 @@ public class Enemy : MonoBehaviour
     private BoxCollider2D _2dCollider;
     private Animator DeathAnimation;
     private AudioSource _LaserSound;
+
+    [SerializeField]
+    private GameObject EnemyLaserPrefab;
+   
+   
     private void Start()
     {
         p1 = GameObject.Find("Player").GetComponent<Player>();
@@ -24,9 +29,14 @@ public class Enemy : MonoBehaviour
             Debug.LogError("Animator is null");
         }
         _LaserSound = GameObject.Find("ExplosionSound").GetComponent<AudioSource>();
+        StartCoroutine(EnemyFireCooldown());
     }
     // Update is called once per frame
     void Update()
+    {
+        CalculateMovement();
+    }
+    void CalculateMovement()
     {
        //Enemy Movement//
     transform.Translate(Vector3.down*_speed*Time.deltaTime);
@@ -35,12 +45,13 @@ public class Enemy : MonoBehaviour
         {
             transform.position = new Vector3(Random.Range(-9f, 9f), 8, 0);
         }
+
     }
     //Enemy Collison//
     private void OnTriggerEnter2D(Collider2D other)
     {
         //Destroy Enemy Object and damages player//
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             Player p1 = other.transform.GetComponent<Player>();
             
@@ -56,7 +67,7 @@ public class Enemy : MonoBehaviour
 
         }
         //Destorys laser and enemy object//
-        if (other.tag == "Laser")
+        if (other.CompareTag("Laser") || other.CompareTag("PlayerLaser"))
         {
             
             Destroy(other.gameObject);
@@ -74,4 +85,18 @@ public class Enemy : MonoBehaviour
        }
 
     }
+    void FireLaser()
+    {
+        Instantiate(EnemyLaserPrefab,transform.position + new Vector3(0,-.8f, 0),Quaternion.identity);
+        
+    }
+   IEnumerator EnemyFireCooldown()
+    {
+        while (true)
+        {
+            FireLaser();
+            yield return new WaitForSeconds(Random.Range(3f,7f));
+        }
+    }
+   
 }   

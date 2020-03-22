@@ -204,5 +204,13 @@ public class Player : MonoBehaviour
         score += 1;
         _uIManager.UpdateScore(score);
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("EnemyLaser"))
+        {
+            Damage();
+            Destroy(other);
+        }
+    }
 
 }
